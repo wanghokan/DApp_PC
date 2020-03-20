@@ -12,7 +12,7 @@ class Toolbar extends Component{
                 defaultSelectedKeys="home"
             >
                 <Menu.Item key="home" style={{ fontSize: 16 }}>
-                    <Link to="">
+                    <Link to="/home">
                         首頁
                     </Link>
                 </Menu.Item>

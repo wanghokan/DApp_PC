@@ -49,10 +49,8 @@ class App extends Component {
     this.setState({ account: accounts[0] })
     const networksId = await web3.eth.net.getId()
     const networkData = Contract.networks[networksId]
-    console.log(networkData)
     if(networkData) {
       const contract = new web3.eth.Contract(Contract.abi, networkData.address)
-      console.log(contract)
       const len = await contract.methods.projectIndex().call()
       const projects = []
       for(var i = 0; i < len; i++){
@@ -148,24 +146,21 @@ class App extends Component {
             <Toolbar/>
           </Sider>
           <Content style={{ marginLeft: 20, marginRight: 20 }} className="content">
-          { (window.location.href == "http://localhost:3000/")
-            ?
             <div>
-              <p></p>
-              <section style={{ textAlign: "center" }}>
-                <h1 style={{ fontSize: 20 }}>首頁</h1>
-                <span style={{ fontSize: 18 }}>請選擇專案: </span>
-                <Select style={{ width: 500 }} onChange={(value) => this.setState({ project: value })}>
-                  {this.state.projects.map((p, k) =>
-                      <Option key={k} value={k}>{p}</Option>
-                  )}
-                </Select>
-                <span> </span>
-                <Button style={{ width: 100 }} onClick={this.importWBS}>確認</Button>
-              </section>
-            </div>
-            :
-            <div>
+              <Route path="/home">
+                <p></p>
+                <section style={{ textAlign: "center" }}>
+                  <h1 style={{ fontSize: 20 }}>首頁</h1>
+                  <span style={{ fontSize: 18 }}>請選擇專案: </span>
+                  <Select style={{ width: 500 }} onChange={(value) => this.setState({ project: value })}>
+                    {this.state.projects.map((p, k) =>
+                        <Option key={k} value={k}>{p}</Option>
+                    )}
+                  </Select>
+                  <span> </span>
+                  <Button style={{ width: 100 }} onClick={this.importWBS}>確認</Button>
+                </section>
+              </Route>
             <Route path="/newproject">
               <NewProject createProject={this.createProject}/>
             </Route>
@@ -213,7 +208,6 @@ class App extends Component {
                      projectName={this.state.projectName}/>
             </Route>
             </div>
-          }
           </Content>          
         </Layout>
       </Layout>
