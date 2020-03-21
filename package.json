@@ -14,7 +14,7 @@
     "react-html-table-to-excel": "^2.0.0",
     "react-html5-camera-photo": "^1.5.4",
     "react-router-dom": "^5.1.2",
-    "react-scripts": "3.2.0",
+    "react-scripts": "^3.4.1",
     "react-to-pdf": "0.0.8",
     "web3": "1.2.2"
   },
