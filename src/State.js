@@ -44,7 +44,7 @@ class State extends Component{
                                         forth.state = "表單已建立, 已查驗, 無查驗項目不合格, 查驗時間: " + window.web3.utils.toUtf8(sheets._executeTime) + ", 查驗人員: " + sheets._executor.toString()
                                     }
                                     else{
-                                        forth.state = "表單已建立, 已查驗, " + falseNum.toString() + "個查驗項目不合格, 查驗時間: " + sheets._executeTime.toString() + ", 查驗人員: " + sheets._executor.toString()
+                                        forth.state = "表單已建立, 已查驗, " + falseNum.toString() + "個查驗項目不合格, 查驗時間: " + window.web3.utils.toUtf8(sheets._executeTime) + ", 查驗人員: " + sheets._executor.toString()
                                     }
                                 }
                             }
