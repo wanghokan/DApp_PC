@@ -12,32 +12,32 @@ class Toolbar extends Component{
                 defaultSelectedKeys="home"
             >
                 <Menu.Item key="home" style={{ fontSize: 16 }}>
-                    <Link to="/DApp_PC/home">
+                    <Link to="/">
                         首頁
                     </Link>
                 </Menu.Item>
                 <Menu.Item style={{ fontSize: 16 }}>
-                    <Link to="/DApp_PC/newproject">
+                    <Link to="/newproject">
                     建立專案
                     </Link>
                 </Menu.Item>
                 <Menu.Item style={{ fontSize: 16 }}>
-                    <Link to="/DApp_PC/itemupload">
+                    <Link to="/itemupload">
                     匯入查驗項目
                     </Link>
                 </Menu.Item>
                 <Menu.Item style={{ fontSize: 16 }}>
-                    <Link to="/DApp_PC/newsheet">
+                    <Link to="/newsheet">
                     新增查驗表單
                     </Link>
                 </Menu.Item>
                 <Menu.Item style={{ fontSize: 16 }}>
-                    <Link to="/DApp_PC/state">
+                    <Link to="/state">
                     檢視查驗狀態
                     </Link>
                 </Menu.Item>
                 <Menu.Item style={{ fontSize: 16 }}>
-                    <Link to="/DApp_PC/sheet">
+                    <Link to="/sheet">
                     匯出查驗表單
                     </Link>
                 </Menu.Item>

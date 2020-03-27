@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import  { Route } from "react-router-dom";
+import  { HashRouter, Route } from "react-router-dom";
 import { Layout, Menu, Select, Button } from "antd";
 import Navbar from "./Navbar";
 import Toolbar from "./Toolbar";
@@ -141,77 +141,79 @@ class App extends Component {
     return (
       <Layout>
         <Navbar account={this.state.account} projectName={this.state.projectName}/>
+        <HashRouter basename="/">
         <Layout>
           <Sider theme="light">
             <Toolbar/>
           </Sider>
           <Content style={{ marginLeft: 20, marginRight: 20 }} className="content">
             <div>
-              <Route path="/DApp_PC/home">
-                <p></p>
-                <section style={{ textAlign: "center" }}>
-                  <h1 style={{ fontSize: 20 }}>首頁</h1>
-                  <span style={{ fontSize: 18 }}>請選擇專案: </span>
-                  <Select style={{ width: 500 }} onChange={(value) => this.setState({ project: value })}>
-                    {this.state.projects.map((p, k) =>
-                        <Option key={k} value={k}>{p}</Option>
-                    )}
-                  </Select>
-                  <span> </span>
-                  <Button style={{ width: 100 }} onClick={this.importWBS}>確認</Button>
-                </section>
-              </Route>
-            <Route path="/DApp_PC/newproject">
-              <NewProject createProject={this.createProject}/>
-            </Route>
-            <Route path="/DApp_PC/itemupload">
-              <ItemUpload projectName={this.state.projectName} 
-                          Term={this.state.Term} 
+                <Route exact path="/">
+                  <p></p>
+                  <section style={{ textAlign: "center" }}>
+                    <h1 style={{ fontSize: 20 }}>首頁</h1>
+                    <span style={{ fontSize: 18 }}>請選擇專案: </span>
+                    <Select style={{ width: 500 }} onChange={(value) => this.setState({ project: value })}>
+                      {this.state.projects.map((p, k) =>
+                          <Option key={k} value={k}>{p}</Option>
+                      )}
+                    </Select>
+                    <span> </span>
+                    <Button style={{ width: 100 }} onClick={this.importWBS}>確認</Button>
+                  </section>
+                </Route>
+                <Route path="/newproject">
+                  <NewProject createProject={this.createProject}/>
+                </Route>
+                <Route path="/itemupload">
+                  <ItemUpload projectName={this.state.projectName} 
+                              Term={this.state.Term} 
+                              Class={this.state.Class} 
+                              Task={this.state.Task} 
+                              uploadItem={this.uploadItem}
+                              inspectionItems={this.inspectionItems}/>
+                </Route>
+                <Route path="/newsheet">
+                  <Newsheet projectName={this.state.projectName} 
+                            Term={this.state.Term} 
+                            Class={this.state.Class} 
+                            Task={this.state.Task} 
+                            Location={this.state.Location} 
+                            inspectionItems={this.inspectionItems}
+                            sheetContent={this.sheetContent}
+                            createSheet={this.createSheet}/>
+                </Route>
+                <Route path="/inspect">
+                  <Inspect projectName={this.state.projectName}
+                          Term={this.state.Term}
                           Class={this.state.Class} 
                           Task={this.state.Task} 
-                          uploadItem={this.uploadItem}
-                          inspectionItems={this.inspectionItems}/>
-            </Route>
-            <Route path="/DApp_PC/newsheet">
-              <Newsheet projectName={this.state.projectName} 
+                          Location={this.state.Location} 
+                          inspectionItems={this.inspectionItems}
+                          sheetContent={this.sheetContent}
+                          fillSheet={this.fillSheet}/>
+                </Route>
+                <Route path="/sheet">
+                  <Sheet projectName={this.state.projectName}
                         Term={this.state.Term} 
+                        Class={this.state.Class}
+                        Task={this.state.Task} 
+                        Location={this.state.Location} 
+                        sheetContent={this.sheetContent}
+                        inspectionItems={this.inspectionItems}/>
+                </Route>
+                <Route path="/state">
+                  <State Term={this.state.Term} 
                         Class={this.state.Class} 
                         Task={this.state.Task} 
                         Location={this.state.Location} 
-                        inspectionItems={this.inspectionItems}
                         sheetContent={this.sheetContent}
-                        createSheet={this.createSheet}/>
-            </Route>
-            <Route path="/DApp_PC/inspect">
-              <Inspect projectName={this.state.projectName}
-                       Term={this.state.Term}
-                       Class={this.state.Class} 
-                       Task={this.state.Task} 
-                       Location={this.state.Location} 
-                       inspectionItems={this.inspectionItems}
-                       sheetContent={this.sheetContent}
-                       fillSheet={this.fillSheet}/>
-            </Route>
-            <Route path="/DApp_PC/sheet">
-              <Sheet projectName={this.state.projectName}
-                     Term={this.state.Term} 
-                     Class={this.state.Class}
-                     Task={this.state.Task} 
-                     Location={this.state.Location} 
-                     sheetContent={this.sheetContent}
-                     inspectionItems={this.inspectionItems}/>
-            </Route>
-            <Route path="/DApp_PC/state">
-              <State Term={this.state.Term} 
-                     Class={this.state.Class} 
-                     Task={this.state.Task} 
-                     Location={this.state.Location} 
-                     sheetContent={this.sheetContent}
-                     projectName={this.state.projectName}/>
-            </Route>
+                        projectName={this.state.projectName}/>
+                </Route>
             </div>
           </Content>          
         </Layout>
+        </HashRouter>
       </Layout>
     );
   }
