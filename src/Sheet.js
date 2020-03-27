@@ -48,10 +48,12 @@ class Sheet extends Component{
             if(sheet._executor == "0x0000000000000000000000000000000000000001"){
                 alert("表單尚未填寫")
             }
+            if(sheet._executor == "0x0000000000000000000000000000000000000000"){
+                alert("表單尚未建立")
+            }
             else{
                 let falseNum = 0
                 this.setState({ hashArray: window.web3.utils.toUtf8(sheet._photo).split("@") })
-                console.log(this.state.hashArray)
                 for(var i = 0; i < sheet._itemsState.length; i++){
                     if(sheet._itemsState[i] == 2) falseNum++
                 }
