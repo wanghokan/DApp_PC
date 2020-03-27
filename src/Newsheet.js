@@ -36,7 +36,6 @@ class Newsheet extends Component{
         }
         else{
             let hash = await this.props.inspectionItems(itemId)
-            console.log(hash)
             if(hash == ""){
                 alert("此工項尚未匯入查驗項目")
             }
@@ -70,8 +69,7 @@ class Newsheet extends Component{
         }
         else{
             let sc = await this.props.sheetContent(sheetId)
-            console.log(sc)//created 0x0000000000000000000000000000000000000001
-            if(sc._executor == "0x0000000000000000000000000000000000000001"){
+            if(sc._executor != "0x0000000000000000000000000000000000000000"){
                 alert("表單已建立")
             }
             else{
