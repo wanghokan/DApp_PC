@@ -147,7 +147,7 @@ class App extends Component {
           </Sider>
           <Content style={{ marginLeft: 20, marginRight: 20 }} className="content">
             <div>
-              <Route path="/home">
+              <Route path="/DApp_PC/home">
                 <p></p>
                 <section style={{ textAlign: "center" }}>
                   <h1 style={{ fontSize: 20 }}>首頁</h1>
@@ -161,10 +161,10 @@ class App extends Component {
                   <Button style={{ width: 100 }} onClick={this.importWBS}>確認</Button>
                 </section>
               </Route>
-            <Route path="/newproject">
+            <Route path="/DApp_PC/newproject">
               <NewProject createProject={this.createProject}/>
             </Route>
-            <Route path="/itemupload">
+            <Route path="/DApp_PC/itemupload">
               <ItemUpload projectName={this.state.projectName} 
                           Term={this.state.Term} 
                           Class={this.state.Class} 
@@ -172,7 +172,7 @@ class App extends Component {
                           uploadItem={this.uploadItem}
                           inspectionItems={this.inspectionItems}/>
             </Route>
-            <Route path="/newsheet">
+            <Route path="/DApp_PC/newsheet">
               <Newsheet projectName={this.state.projectName} 
                         Term={this.state.Term} 
                         Class={this.state.Class} 
@@ -182,7 +182,7 @@ class App extends Component {
                         sheetContent={this.sheetContent}
                         createSheet={this.createSheet}/>
             </Route>
-            <Route path="/inspect">
+            <Route path="/DApp_PC/inspect">
               <Inspect projectName={this.state.projectName}
                        Term={this.state.Term}
                        Class={this.state.Class} 
@@ -192,7 +192,7 @@ class App extends Component {
                        sheetContent={this.sheetContent}
                        fillSheet={this.fillSheet}/>
             </Route>
-            <Route path="/sheet">
+            <Route path="/DApp_PC/sheet">
               <Sheet projectName={this.state.projectName}
                      Term={this.state.Term} 
                      Class={this.state.Class}
@@ -201,7 +201,7 @@ class App extends Component {
                      sheetContent={this.sheetContent}
                      inspectionItems={this.inspectionItems}/>
             </Route>
-            <Route path="/state">
+            <Route path="/DApp_PC/state">
               <State Term={this.state.Term} 
                      Class={this.state.Class} 
                      Task={this.state.Task} 
