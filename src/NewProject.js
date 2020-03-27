@@ -39,12 +39,20 @@ class NumberUpload extends Component{
     onSubmit = (event) => {
         event.preventDefault()
         console.log("Submitting file to ipfs...")
-        ipfs.add(this.state.buffer, (error, result) => {
+        ipfs.add(this.state.buffer, async(error, result) => {
             console.log('Ipfs result', result)
             if(error) {
             console.error(error)
             return
             }
+            //let url = "https://ipfs.infura.io/ipfs/" + result[0].hash
+            //const wbs = await fetch(url).then(response => response.json())
+            //if(wbs.term != undefined && wbs.class != undefined && wbs.task != undefined && wbs.location != undefined){
+            //    console.log("ok")
+            //}
+            //else{
+            //    console.log("error")
+            //}
             this.props.createProject(this.state.name, result[0].hash)
         })
     }
@@ -56,9 +64,9 @@ class NumberUpload extends Component{
                 <h1 style={{ fontSize: 20 }}>建立專案</h1>
                 <p></p>
                 <span style={{ fontSize: 18 }}>工程名稱: </span>
-                <Input id="0" style={{ width: 500 }} onChange={this.name}/>
+                <Input id="1" style={{ width: 500 }} onChange={this.name}/>
                 <p></p>
-                <input type="file" onChange={this.captureFile}/>
+                <input type="file" accept=".json" onChange={this.captureFile}/>
                 <span> </span>
                 <Button onClick={this.onSubmit}>
                     上傳

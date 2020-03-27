@@ -40,71 +40,75 @@ class Sheet extends Component{
     search = async() => {
         window.web3 = new Web3(window.ethereum)
         if(this.state.term == 0 || this.state.class == 0 || this.state.task == 0 || this.state.location == 0){
-            alert("please finish the selection!")
+            alert("請選擇工項")
         }
         else{
             this.setState({ index: (10000000*this.state.term + 100000*this.state.class + 1000*this.state.task + this.state.location) })
             let sheet = await this.props.sheetContent(10000000*this.state.term + 100000*this.state.class + 1000*this.state.task + this.state.location)
-            let falseNum = 0
-            this.setState({ hashArray: window.web3.utils.toUtf8(sheet._photo).split("@") })
-            console.log(this.state.hashArray)
-            for(var i = 0; i < sheet._itemsState.length; i++){
-                if(sheet._itemsState[i] == 2) falseNum++
-            }
-            if((sheet._executed != 0) && (falseNum == 0)){
-                this.setState({ isSearch: true })
-                this.setState({ time: sheet._executeTime })
-                this.setState({ executor: sheet._executor })
-                const _contractor = window.web3.utils.toUtf8(sheet._contractor)
-                this.setState({ contractor: _contractor })
-                const note = window.web3.utils.toUtf8(sheet._note)
-                this.setState({ note: note.split("@") })
-                let itemsHash = await this.props.inspectionItems(10000000*this.state.term + 100000*this.state.class + 1000*this.state.task)
-                let url = "https://ipfs.infura.io/ipfs/" + itemsHash
-                let items = await fetch(url).then(response => response.json())
-                let is = sheet._itemsState
-                let itemsState = []
-                for(var i = 0; i < is.length; i++){
-                    if(is[i] == 0){
-                        itemsState.push("空白")
-                    }
-                    if(is[i] == 1){
-                        itemsState.push("合格")
-                    }
-                    if(is[i] == 2){
-                        itemsState.push("有缺失需改正")
-                    }
-                    if(is[i] == 3){
-                        itemsState.push("缺失立即改善")
-                    }
-                    if(is[i] == 4){
-                        itemsState.push("無此查驗項目")
-                    }
-                }
-                if(sheet._timing == 0){
-                    this.setState({ timing: "檢驗停留點" })
-                }
-                if(sheet._timing == 1){
-                    this.setState({ timing: "施工中檢查" })
-                }
-                if(sheet._timing == 2){
-                    this.setState({ timing: "施工完成檢查" })
-                }
-                if(sheet._executed == 1){
-                    this.setState({ executedState: "初驗合格" })
-                }
-                if(sheet._executed != 1){
-                    this.setState({ executedState: "複驗合格" })
-                }
-                this.setState({ items })
-                this.setState({ itemsState })
+            if(sheet._executor == "0x0000000000000000000000000000000000000001"){
+                alert("表單尚未填寫")
             }
             else{
-                alert("該項目尚未通過查驗")
+                let falseNum = 0
+                this.setState({ hashArray: window.web3.utils.toUtf8(sheet._photo).split("@") })
+                console.log(this.state.hashArray)
+                for(var i = 0; i < sheet._itemsState.length; i++){
+                    if(sheet._itemsState[i] == 2) falseNum++
+                }
+                if((sheet._executed != 0) && (falseNum == 0)){
+                    this.setState({ isSearch: true })
+                    const _executeTime = window.web3.utils.toUtf8(sheet._executeTime)
+                    this.setState({ time: _executeTime })
+                    this.setState({ executor: sheet._executor })
+                    const _contractor = window.web3.utils.toUtf8(sheet._contractor)
+                    this.setState({ contractor: _contractor })
+                    const note = window.web3.utils.toUtf8(sheet._note)
+                    this.setState({ note: note.split("@") })
+                    let itemsHash = await this.props.inspectionItems(10000000*this.state.term + 100000*this.state.class + 1000*this.state.task)
+                    let url = "https://ipfs.infura.io/ipfs/" + itemsHash
+                    let items = await fetch(url).then(response => response.json())
+                    let is = sheet._itemsState
+                    let itemsState = []
+                    for(var i = 0; i < is.length; i++){
+                        if(is[i] == 0){
+                            itemsState.push("空白")
+                        }
+                        if(is[i] == 1){
+                            itemsState.push("合格")
+                        }
+                        if(is[i] == 2){
+                            itemsState.push("有缺失需改正")
+                        }
+                        if(is[i] == 3){
+                            itemsState.push("缺失立即改善")
+                        }
+                        if(is[i] == 4){
+                            itemsState.push("無此查驗項目")
+                        }
+                    }
+                    if(sheet._timing == 0){
+                        this.setState({ timing: "檢驗停留點" })
+                    }
+                    if(sheet._timing == 1){
+                        this.setState({ timing: "施工中檢查" })
+                    }
+                    if(sheet._timing == 2){
+                        this.setState({ timing: "施工完成檢查" })
+                    }
+                    if(sheet._executed == 1){
+                        this.setState({ executedState: "初驗合格" })
+                    }
+                    if(sheet._executed != 1){
+                        this.setState({ executedState: "複驗合格" })
+                    }
+                    this.setState({ items })
+                    this.setState({ itemsState })
+                }
+                else{
+                    alert("該項目尚未通過查驗")
+                }
             }
         }
-        //console.log(document.body.children)
-        //console.log(document.body.children[1].children[0].children[1].children[1].children[0].children[0].children[2].children[0])
     }
 
     export = () => {
@@ -213,7 +217,7 @@ class Sheet extends Component{
                    ?<div>
                        <Button onClick={this.export}>匯出PDF</Button>
                        <p></p>
-                       <div className="pdf">
+                       <div>
                         <table border="1" id="myTable" ref={myRef} style={{ width: 600 }}>
                                 <tr>
                                     <td colSpan="5" align="center">{this.props.Task[this.props.Class[this.props.Term[this.state.term]][this.state.class]][this.state.task]+"自主查驗表單 ("+this.state.index+")"}</td>
@@ -261,7 +265,7 @@ class Sheet extends Component{
                                             <td colSpan="2" style={{ width: 200 }}>{i}</td>
                                             <td style={{ width: 100 }} align="center">{this.state.itemsState[key]}</td>
                                             <td style={{ width: 130 }} align="center">{this.state.note[key]}</td>
-                                            <td align="center">
+                                            <td style={{ width: 170 }} align="center">
                                                 {(this.state.hashArray[key] == "")
                                                 ? <a></a>
                                                 : <img src={"https://ipfs.infura.io/ipfs/"+this.state.hashArray[key]} style={{ width: 160, height: 120 }}></img>

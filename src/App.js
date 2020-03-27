@@ -68,7 +68,7 @@ class App extends Component {
 
   importWBS = async() => {
     if(this.state.project == null){
-      alert("please select the project first!")
+      alert("請先選擇專案")
     }
     else{
       let proj = await this.state.contract.methods.projects(this.state.project).call()
@@ -169,7 +169,8 @@ class App extends Component {
                           Term={this.state.Term} 
                           Class={this.state.Class} 
                           Task={this.state.Task} 
-                          uploadItem={this.uploadItem}/>
+                          uploadItem={this.uploadItem}
+                          inspectionItems={this.inspectionItems}/>
             </Route>
             <Route path="/newsheet">
               <Newsheet projectName={this.state.projectName} 
@@ -177,7 +178,8 @@ class App extends Component {
                         Class={this.state.Class} 
                         Task={this.state.Task} 
                         Location={this.state.Location} 
-                        inspectionItems={this.inspectionItems} 
+                        inspectionItems={this.inspectionItems}
+                        sheetContent={this.sheetContent}
                         createSheet={this.createSheet}/>
             </Route>
             <Route path="/inspect">

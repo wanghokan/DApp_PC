@@ -32,7 +32,7 @@ class Newsheet extends Component{
     importItem = async() => {
         let itemId = 10000000*this.state.term + 100000*this.state.class + 1000*this.state.task
         if(itemId == 0){
-            alert("please finish the selection above")
+            alert("請選擇工項")
         }
         else{
             let hash = await this.props.inspectionItems(itemId)
@@ -53,14 +53,30 @@ class Newsheet extends Component{
         }
     }
 
-    create = (event) => {
+    create = async(event) => {
         event.preventDefault()
         let sheetId = 10000000*this.state.term + 100000*this.state.class + 1000*this.state.task + this.state.location
-        if(sheetId == 0 || this.state.Items.length == 0){
-            alert("Error!")
+        if(sheetId == 0){
+            alert("請選擇工項")
+        }
+        if(this.state.Items.length == 0){
+            alert("請匯入查驗項目")
+        }
+        if(this.state.Contractor == ""){
+            alert("請輸入承包商名稱")
+        }
+        if(this.state.Timing == null){
+            alert("請選擇查驗時機")
         }
         else{
-            this.props.createSheet(sheetId, this.state.itemsState, this.state.Timing, this.state.Contractor)
+            let sc = await this.props.sheetContent(sheetId)
+            console.log(sc)//created 0x0000000000000000000000000000000000000001
+            if(sc._executor == "0x0000000000000000000000000000000000000001"){
+                alert("表單已建立")
+            }
+            else{
+                this.props.createSheet(sheetId, this.state.itemsState, this.state.Timing, this.state.Contractor)
+            }
         }
     }
     

@@ -29,22 +29,44 @@ class ItemUpload extends Component{
           this.setState({ buffer: Buffer(reader.result) })
           console.log('buffer', this.state.buffer)
         }
-        const sheetId = 10000000*this.state.term + 100000*this.state.class + 1000*this.state.task
-        this.setState({ sheetId })
     }
 
-    onSubmit = (event) => {
+    onSubmit = async(event) => {
         event.preventDefault()
-        console.log("Submitting file to ipfs...")
-        ipfs.add(this.state.buffer, (error, result) => {
-          console.log('Ipfs result', result)
-            if(error) {
-                console.error(error)
-                return
+        const itemsId = 10000000*this.state.term + 100000*this.state.class + 1000*this.state.task
+        let ii = await this.props.inspectionItems(itemsId)
+        if(this.state.buffer == null){
+            alert("請上傳查驗項目檔案")
+        }
+        else{
+            if(ii != null){
+                if(window.confirm("此工項查驗項目已上傳，是否取代？")){
+                    console.log("Submitting file to ipfs...")
+                    ipfs.add(this.state.buffer, (error, result) => {
+                    console.log('Ipfs result', result)
+                    if(error) {
+                        console.error(error)
+                        return
+                    }
+                    this.props.uploadItem(itemsId, result[0].hash)
+                    })
+                }
+                else{
+                    return
+                }
             }
-            this.props.uploadItem(this.state.sheetId, result[0].hash)
-
-        })
+            else{
+                console.log("Submitting file to ipfs...")
+                ipfs.add(this.state.buffer, (error, result) => {
+                console.log('Ipfs result', result)
+                if(error) {
+                    console.error(error)
+                    return
+                }
+                    this.props.uploadItem(itemsId, result[0].hash)
+                })
+            }
+        }
     }
     
     render(){

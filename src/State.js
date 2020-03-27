@@ -27,11 +27,11 @@ class State extends Component{
                             //console.log(this.props.Task[this.props.Class[this.props.Term[i]][j]][k])
                             //console.log(this.props.Location[this.props.Task[this.props.Class[this.props.Term[i]][j]][k]][l])
                             if(sheets._executor == "0x0000000000000000000000000000000000000000"){
-                                forth.state = "尚未建立"
+                                forth.state = "表單尚未建立"
                             }
                             else{
                                 if(sheets._executed == 0){
-                                    forth.state = "已建立, 尚未執行查驗"
+                                    forth.state = "表單已建立, 尚未執行查驗"
                                 }
                                 else{
                                     let falseNum = 0
@@ -41,10 +41,10 @@ class State extends Component{
                                         }
                                     }
                                     if(falseNum == 0){
-                                        forth.state = "已建立, 已查驗, 無查驗項目不合格, 查驗時間: " + sheets._executeTime.toString() + ", 查驗人員: " + sheets._executor.toString()
+                                        forth.state = "表單已建立, 已查驗, 無查驗項目不合格, 查驗時間: " + sheets._executeTime.toString() + ", 查驗人員: " + sheets._executor.toString()
                                     }
                                     else{
-                                        forth.state = "已建立, 已查驗, " + falseNum.toString() + "個查驗項目不合格, 查驗時間: " + sheets._executeTime.toString() + ", 查驗人員: " + sheets._executor.toString()
+                                        forth.state = "表單已建立, 已查驗, " + falseNum.toString() + "個查驗項目不合格, 查驗時間: " + sheets._executeTime.toString() + ", 查驗人員: " + sheets._executor.toString()
                                     }
                                 }
                             }
