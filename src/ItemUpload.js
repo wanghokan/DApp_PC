@@ -39,7 +39,7 @@ class ItemUpload extends Component{
             alert("請上傳查驗項目檔案")
         }
         else{
-            if(ii != null){
+            if(ii != ""){
                 if(window.confirm("此工項查驗項目已上傳，是否取代？")){
                     console.log("Submitting file to ipfs...")
                     ipfs.add(this.state.buffer, (error, result) => {
