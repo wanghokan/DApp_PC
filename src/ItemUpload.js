@@ -118,7 +118,7 @@ class ItemUpload extends Component{
                         )}
                     </Select>
                     <p></p>
-                    <input type="file" onChange={this.captureFile}/>
+                    <input type="file" accept=".json" onChange={this.captureFile}/>
                     <Button onClick={this.onSubmit}>上傳</Button>
                 </Content>
                 }
