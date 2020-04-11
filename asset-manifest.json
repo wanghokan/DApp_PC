@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/DApp_PC/static/css/main.3cc92f70.chunk.css",
+    "main.js": "/DApp_PC/static/js/main.6d0f0084.chunk.js",
+    "main.js.map": "/DApp_PC/static/js/main.6d0f0084.chunk.js.map",
+    "runtime-main.js": "/DApp_PC/static/js/runtime-main.f85e1607.js",
+    "runtime-main.js.map": "/DApp_PC/static/js/runtime-main.f85e1607.js.map",
+    "static/css/2.892b8a99.chunk.css": "/DApp_PC/static/css/2.892b8a99.chunk.css",
+    "static/js/2.c0ec89f0.chunk.js": "/DApp_PC/static/js/2.c0ec89f0.chunk.js",
+    "static/js/2.c0ec89f0.chunk.js.map": "/DApp_PC/static/js/2.c0ec89f0.chunk.js.map",
+    "index.html": "/DApp_PC/index.html",
+    "precache-manifest.54cd0cee359ee7d9fb8fa762e5d749f7.js": "/DApp_PC/precache-manifest.54cd0cee359ee7d9fb8fa762e5d749f7.js",
+    "service-worker.js": "/DApp_PC/service-worker.js",
+    "static/css/2.892b8a99.chunk.css.map": "/DApp_PC/static/css/2.892b8a99.chunk.css.map",
+    "static/css/main.3cc92f70.chunk.css.map": "/DApp_PC/static/css/main.3cc92f70.chunk.css.map",
+    "static/js/2.c0ec89f0.chunk.js.LICENSE.txt": "/DApp_PC/static/js/2.c0ec89f0.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.f85e1607.js",
+    "static/css/2.892b8a99.chunk.css",
+    "static/js/2.c0ec89f0.chunk.js",
+    "static/css/main.3cc92f70.chunk.css",
+    "static/js/main.6d0f0084.chunk.js"
+  ]
+}
