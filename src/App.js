@@ -4,7 +4,7 @@ import { Layout, Menu, Select, Button } from "antd";
 import Navbar from "./Navbar";
 import Toolbar from "./Toolbar";
 import "./App.css";
-import Contract from "./contracts/_AutonomousInspection.json";
+import Contract from "./contracts/TheContract.json";
 import Web3 from "web3";
 import NewProject from "./NewProject";
 import Newsheet from "./Newsheet";
@@ -12,7 +12,6 @@ import ItemUpload from "./ItemUpload";
 import Inspect from "./Inspect";
 import Sheet from "./Sheet";
 import State from "./State";
-import Photos from "./Photos";
 
 const { Header, Footer, Sider, Content } = Layout
 const { SubMenu } = Menu
