@@ -95,7 +95,7 @@ class Newsheet extends Component{
                         <span style={{ fontSize: 18}}>工程名稱: </span>
                         <Input style={{ width: 300 }} disabled={true} value={this.props.projectName}/>
                         <p></p>
-                        <span style={{ fontSize: 18}}>工程大項: </span>
+                        <span style={{ fontSize: 18}}>工程類別: </span>
                         <Select
                             style={{ width: 200 }}
                             onChange={(value) => this.setState({ term: value, class: 0, task: 0, location: 0 })}
@@ -105,7 +105,7 @@ class Newsheet extends Component{
                                 <Option value={key} key={key}>{_Term}</Option>
                             )}
                         </Select>
-                        <span style={{ fontSize: 18}}> 工程類別: </span>
+                        <span style={{ fontSize: 18}}> 工程項目: </span>
                         <Select
                             style={{ width: 200 }}
                             onChange={(value) => this.setState({ class: value, task: 0, location: 0 })}
@@ -115,7 +115,7 @@ class Newsheet extends Component{
                                 <Option value={key} key={key}>{_Class}</Option>
                             )}
                         </Select>
-                        <span style={{ fontSize: 18}}> 項目名稱: </span>
+                        <span style={{ fontSize: 18}}> 細部工項: </span>
                         <Select
                             style={{ width: 200 }}
                             onChange={(value) => this.setState({ task: value })}
@@ -125,7 +125,7 @@ class Newsheet extends Component{
                                 <Option value={key} key={key}>{_Task}</Option>
                             )}
                         </Select>
-                        <span style={{ fontSize: 18}}> 查驗位置: </span>
+                        <span style={{ fontSize: 18}}> 施工位置: </span>
                         <Select
                             style={{ width: 200 }}
                             onChange={(value) => this.setState({ location: value })}
