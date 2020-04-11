@@ -13,8 +13,7 @@ import Inspect from "./Inspect";
 import Sheet from "./Sheet";
 import State from "./State";
 
-const { Header, Footer, Sider, Content } = Layout
-const { SubMenu } = Menu
+const { Sider, Content } = Layout
 const { Option } = Select
 
 class App extends Component {
@@ -61,8 +60,6 @@ class App extends Component {
     } else{
       window.alert('AutonomousInspectIon contract not deployed to detected network.')
     }
-    //const sheet = await this.state.contract.methods.sheetContent(0, 10101001).call()
-    //console.log(sheet)
   }
 
   importWBS = async() => {
