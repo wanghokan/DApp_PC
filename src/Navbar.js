@@ -16,6 +16,7 @@ class Navbar extends Component {
                 >
                 <Descriptions size="small" column={3}>
                     <Descriptions.Item label="使用者">{this.props.account}</Descriptions.Item>
+                    <Descriptions.Item label="所屬單位">{this.props.company}</Descriptions.Item>
                     <Descriptions.Item label="工程名稱">{this.props.projectName}</Descriptions.Item>
                 </Descriptions>
                 </PageHeader>

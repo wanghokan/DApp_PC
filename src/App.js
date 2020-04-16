@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import  { HashRouter, Route } from "react-router-dom";
+import { HashRouter, Route } from "react-router-dom";
 import { Layout, Menu, Select, Button } from "antd";
 import Navbar from "./Navbar";
 import Toolbar from "./Toolbar";
@@ -17,8 +17,8 @@ const { Sider, Content } = Layout
 const { Option } = Select
 
 class App extends Component {
-  
-  async componentWillMount(){
+
+  async componentWillMount() {
     await this.loadWeb3()
     await this.loadBlockchainData()
     //var str = window.web3.utils.fromUtf8("@@@測試@這是測試@@")
@@ -47,26 +47,120 @@ class App extends Component {
     this.setState({ account: accounts[0] })
     const networksId = await web3.eth.net.getId()
     const networkData = Contract.networks[networksId]
-    if(networkData) {
-      const contract = new web3.eth.Contract(Contract.abi, networkData.address)
-      const len = await contract.methods.projectIndex().call()
-      const projects = []
-      for(var i = 0; i < len; i++){
-        let p = await contract.methods.projects(i).call()
-        projects.push(web3.utils.toUtf8(p.name))
+    if (networkData) {
+      const authorityAbi = [
+        {
+          "constant": false,
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "_userAddress",
+              "type": "address"
+            },
+            {
+              "internalType": "string",
+              "name": "_name",
+              "type": "string"
+            }
+          ],
+          "name": "newUser",
+          "outputs": [],
+          "payable": false,
+          "stateMutability": "nonpayable",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [],
+          "name": "userCount",
+          "outputs": [
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [
+            {
+              "internalType": "int256",
+              "name": "_id",
+              "type": "int256"
+            }
+          ],
+          "name": "userInfo",
+          "outputs": [
+            {
+              "internalType": "string",
+              "name": "_name",
+              "type": "string"
+            },
+            {
+              "internalType": "address",
+              "name": "_contractAddress",
+              "type": "address"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        },
+        {
+          "constant": true,
+          "inputs": [
+            {
+              "internalType": "address",
+              "name": "",
+              "type": "address"
+            }
+          ],
+          "name": "userNum",
+          "outputs": [
+            {
+              "internalType": "int256",
+              "name": "",
+              "type": "int256"
+            }
+          ],
+          "payable": false,
+          "stateMutability": "view",
+          "type": "function"
+        }
+      ]
+      const authority = new web3.eth.Contract(authorityAbi, "0xAa06a813Ec3343fEFd40568b2f5E59C486b535cC")
+      const userNum = await authority.methods.userNum(this.state.account).call()
+      if (userNum != 0) {
+        const userInfo = await authority.methods.userInfo(userNum).call()
+        this.setState({ company: userInfo._name })
+        const contractAddress = userInfo._contractAddress
+        const contract = new web3.eth.Contract(Contract.abi, contractAddress)
+        const len = await contract.methods.projectIndex().call()
+        const projects = []
+        for (var i = 0; i < len; i++) {
+          let p = await contract.methods.projects(i).call()
+          projects.push(web3.utils.toUtf8(p.name))
+        }
+        this.setState({ contract })
+        this.setState({ projects })
       }
-      this.setState({ contract })
-      this.setState({ projects })
-    } else{
+      else{
+        alert("無使用權限")
+      }
+    } else {
       window.alert('AutonomousInspectIon contract not deployed to detected network.')
     }
   }
 
-  importWBS = async() => {
-    if(this.state.project == null){
+  importWBS = async () => {
+    if (this.state.project == null) {
       alert("請先選擇專案")
     }
-    else{
+    else {
       let proj = await this.state.contract.methods.projects(this.state.project).call()
       let wbshash = proj.wbs
       let url = "https://ipfs.infura.io/ipfs/" + wbshash
@@ -79,11 +173,12 @@ class App extends Component {
     }
   }
 
-  constructor(props){
+  constructor(props) {
     super(props)
 
-    this.state={
+    this.state = {
       account: null,
+      company: null,
       contract: null,
       projects: [],
       Term: null,
@@ -105,45 +200,45 @@ class App extends Component {
 
   //智能合約中的function或data
   //於區塊鏈上建立新的查驗表單，記錄表單編號及查驗項目個數
-  createSheet(sheetId, itemsState, timing, contractor){
+  createSheet(sheetId, itemsState, timing, contractor) {
     this.state.contract.methods.createSheet(this.state.project, sheetId, itemsState, timing, contractor).send({ from: this.state.account }).once("receipt", (receipt) => { console.log("receipt") })
   }
   //於區塊鏈上紀錄已上傳至IPFS的WBS之HASH值
-  createProject(name, ipfshash){
+  createProject(name, ipfshash) {
     this.state.contract.methods.createProject(name, ipfshash).send({ from: this.state.account }).once("receipt", (receipt) => { console.log("receipt") })
   }
   //於區塊鏈上紀錄已上傳至IPFS的查驗項目，紀錄對應工項及HASH值
-  uploadItem(itemId, ipfshash){
+  uploadItem(itemId, ipfshash) {
     this.state.contract.methods.uploadItem(this.state.project, itemId, ipfshash).send({ from: this.state.account }).once("receipt", (receipt) => { console.log("receipt") })
   }
   //取得區塊鏈上某工項之查驗項目的HASH值
-  inspectionItems(itemId){
+  inspectionItems(itemId) {
     return this.state.contract.methods.inspectionItems(this.state.project, itemId).call()
   }
   //取得區塊鏈上某查驗表單的內容
-  sheetContent(sheetId){
+  sheetContent(sheetId) {
     return this.state.contract.methods.sheetContent(this.state.project, sheetId).call()
   }
   //取得區塊鏈上某查驗表單的各查驗項目之狀態
-  sheet_state(sheetId){
+  sheet_state(sheetId) {
     return this.state.contract.methods.sheet_state(sheetId).call()
   }
   //對區塊鏈上某查驗表單的內容進行修改(填表)
-  fillSheet(sheetId, state, date, note){
+  fillSheet(sheetId, state, date, note) {
     this.state.contract.methods.fillSheet(this.state.project, sheetId, state, date, note).send({ from: this.state.account }).once("receipt", (receipt) => { console.log("receipt") })
   }
 
   render() {
     return (
       <Layout>
-        <Navbar account={this.state.account} projectName={this.state.projectName}/>
+        <Navbar account={this.state.account} company={this.state.company} projectName={this.state.projectName} />
         <HashRouter basename="/">
-        <Layout>
-          <Sider theme="light">
-            <Toolbar/>
-          </Sider>
-          <Content style={{ marginLeft: 20, marginRight: 20 }} className="content">
-            <div>
+          <Layout>
+            <Sider theme="light">
+              <Toolbar />
+            </Sider>
+            <Content style={{ marginLeft: 20, marginRight: 20 }} className="content">
+              <div>
                 <Route exact path="/">
                   <p></p>
                   <section style={{ textAlign: "center" }}>
@@ -151,7 +246,7 @@ class App extends Component {
                     <span style={{ fontSize: 18 }}>請選擇專案: </span>
                     <Select style={{ width: 500 }} onChange={(value) => this.setState({ project: value })}>
                       {this.state.projects.map((p, k) =>
-                          <Option key={k} value={k}>{p}</Option>
+                        <Option key={k} value={k}>{p}</Option>
                       )}
                     </Select>
                     <span> </span>
@@ -159,56 +254,56 @@ class App extends Component {
                   </section>
                 </Route>
                 <Route path="/newproject">
-                  <NewProject createProject={this.createProject}/>
+                  <NewProject createProject={this.createProject} />
                 </Route>
                 <Route path="/itemupload">
-                  <ItemUpload projectName={this.state.projectName} 
-                              Term={this.state.Term} 
-                              Class={this.state.Class} 
-                              Task={this.state.Task} 
-                              uploadItem={this.uploadItem}
-                              inspectionItems={this.inspectionItems}/>
+                  <ItemUpload projectName={this.state.projectName}
+                    Term={this.state.Term}
+                    Class={this.state.Class}
+                    Task={this.state.Task}
+                    uploadItem={this.uploadItem}
+                    inspectionItems={this.inspectionItems} />
                 </Route>
                 <Route path="/newsheet">
-                  <Newsheet projectName={this.state.projectName} 
-                            Term={this.state.Term} 
-                            Class={this.state.Class} 
-                            Task={this.state.Task} 
-                            Location={this.state.Location} 
-                            inspectionItems={this.inspectionItems}
-                            sheetContent={this.sheetContent}
-                            createSheet={this.createSheet}/>
+                  <Newsheet projectName={this.state.projectName}
+                    Term={this.state.Term}
+                    Class={this.state.Class}
+                    Task={this.state.Task}
+                    Location={this.state.Location}
+                    inspectionItems={this.inspectionItems}
+                    sheetContent={this.sheetContent}
+                    createSheet={this.createSheet} />
                 </Route>
                 <Route path="/inspect">
                   <Inspect projectName={this.state.projectName}
-                          Term={this.state.Term}
-                          Class={this.state.Class} 
-                          Task={this.state.Task} 
-                          Location={this.state.Location} 
-                          inspectionItems={this.inspectionItems}
-                          sheetContent={this.sheetContent}
-                          fillSheet={this.fillSheet}/>
+                    Term={this.state.Term}
+                    Class={this.state.Class}
+                    Task={this.state.Task}
+                    Location={this.state.Location}
+                    inspectionItems={this.inspectionItems}
+                    sheetContent={this.sheetContent}
+                    fillSheet={this.fillSheet} />
                 </Route>
                 <Route path="/sheet">
                   <Sheet projectName={this.state.projectName}
-                        Term={this.state.Term} 
-                        Class={this.state.Class}
-                        Task={this.state.Task} 
-                        Location={this.state.Location} 
-                        sheetContent={this.sheetContent}
-                        inspectionItems={this.inspectionItems}/>
+                    Term={this.state.Term}
+                    Class={this.state.Class}
+                    Task={this.state.Task}
+                    Location={this.state.Location}
+                    sheetContent={this.sheetContent}
+                    inspectionItems={this.inspectionItems} />
                 </Route>
                 <Route path="/state">
-                  <State Term={this.state.Term} 
-                        Class={this.state.Class} 
-                        Task={this.state.Task} 
-                        Location={this.state.Location} 
-                        sheetContent={this.sheetContent}
-                        projectName={this.state.projectName}/>
+                  <State Term={this.state.Term}
+                    Class={this.state.Class}
+                    Task={this.state.Task}
+                    Location={this.state.Location}
+                    sheetContent={this.sheetContent}
+                    projectName={this.state.projectName} />
                 </Route>
-            </div>
-          </Content>          
-        </Layout>
+              </div>
+            </Content>
+          </Layout>
         </HashRouter>
       </Layout>
     );
@@ -219,9 +314,9 @@ export default App;
 
 /*
             <Route path="/photos">
-              <Photos Term={this.state.Term} 
-                      Class={this.state.Class} 
-                      Task={this.state.Task} 
+              <Photos Term={this.state.Term}
+                      Class={this.state.Class}
+                      Task={this.state.Task}
                       Location={this.state.Location}
                       projectName={this.state.projectName}
                       sheetContent={this.sheetContent}/>
